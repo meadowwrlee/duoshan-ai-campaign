@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>多闪 AI情绪人格企划</title>
+    <style>
+      :root {
+        --ink: #101314;
+        --muted: rgba(16, 19, 20, 0.58);
+        --line: rgba(255, 255, 255, 0.68);
+        --glass: rgba(255, 255, 255, 0.66);
+        --mint: #42ead4;
+        --aqua: #63d8ff;
+        --shadow: 0 26px 80px rgba(31, 170, 178, 0.16);
+        --card-shadow: 0 16px 48px rgba(37, 151, 158, 0.13);
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui,
+          sans-serif;
+        background:
+          radial-gradient(circle at 12% 10%, rgba(79, 239, 219, 0.36), transparent 30%),
+          radial-gradient(circle at 84% 16%, rgba(181, 239, 255, 0.72), transparent 30%),
+          linear-gradient(180deg, #fbffff 0%, #effdfb 46%, #f8fffc 100%);
+        min-width: 320px;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(110deg, transparent 0 28%, rgba(66, 234, 212, 0.12) 28.2% 28.45%, transparent 28.8%),
+          linear-gradient(72deg, transparent 0 66%, rgba(99, 216, 255, 0.13) 66.2% 66.45%, transparent 66.8%);
+        opacity: 0.8;
+      }
+
+      .container {
+        width: min(1160px, calc(100% - 48px));
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero {
+        padding: 72px 0 54px;
+      }
+
+      .hero-copy {
+        text-align: center;
+        margin-bottom: 34px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        border: 1px solid rgba(34, 214, 196, 0.22);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.58);
+        box-shadow: var(--card-shadow);
+        backdrop-filter: blur(18px);
+        color: rgba(16, 19, 20, 0.62);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--mint), var(--aqua));
+        box-shadow: 0 0 18px rgba(66, 234, 212, 0.7);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        margin-top: 22px;
+        font-size: clamp(46px, 7vw, 86px);
+        line-height: 1.02;
+        letter-spacing: 0;
+        font-weight: 900;
+      }
+
+      .subtitle {
+        max-width: 680px;
+        margin: 20px auto 0;
+        color: var(--muted);
+        font-size: clamp(18px, 2.2vw, 25px);
+        line-height: 1.65;
+        font-weight: 600;
+      }
+
+      .kv-card,
+      .section-card {
+        border: 1px solid var(--line);
+        background: var(--glass);
+        border-radius: calc(var(--radius) + 12px);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(24px);
+      }
+
+      .kv-card {
+        padding: clamp(14px, 2vw, 22px);
+      }
+
+      .image-frame {
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .image-frame img {
+        transition: transform 0.55s ease, filter 0.55s ease;
+      }
+
+      .image-frame:hover img {
+        transform: scale(1.025);
+        filter: saturate(1.04);
+      }
+
+      section {
+        padding: 46px 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 28px;
+        margin-bottom: 22px;
+      }
+
+      .section-kicker {
+        color: #10b5ad;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin-top: 8px;
+        font-size: clamp(28px, 3vw, 44px);
+        line-height: 1.18;
+        font-weight: 900;
+      }
+
+      .section-desc {
+        max-width: 460px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.8;
+        font-weight: 500;
+      }
+
+      .concept-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .concept-card {
+        min-height: 190px;
+        padding: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.64);
+        box-shadow: var(--card-shadow);
+        backdrop-filter: blur(18px);
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+      }
+
+      .concept-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 22px 64px rgba(37, 151, 158, 0.17);
+      }
+
+      .concept-number {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        margin-bottom: 20px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, var(--mint), var(--aqua));
+        color: white;
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .concept-card h3 {
+        font-size: 22px;
+        font-weight: 900;
+      }
+
+      .concept-card p {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.75;
+        font-weight: 500;
+      }
+
+      .personality-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+      }
+
+      .personality-card {
+        padding: 16px 16px 22px;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: calc(var(--radius) + 4px);
+        background: rgba(255, 255, 255, 0.68);
+        box-shadow: var(--card-shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .personality-card .image-frame {
+        border-radius: 24px;
+      }
+
+      .personality-card h3 {
+        margin-top: 16px;
+        font-size: 22px;
+        font-weight: 900;
+      }
+
+      .personality-card p {
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .wide-card {
+        padding: clamp(16px, 2vw, 24px);
+      }
+
+      .wide-card .image-frame {
+        border-radius: 28px;
+      }
+
+      .ending {
+        padding: 44px 0 86px;
+      }
+
+      .ending-card {
+        padding: clamp(34px, 5vw, 66px);
+        text-align: center;
+      }
+
+      .ending-card p {
+        max-width: 760px;
+        margin: 0 auto;
+        font-size: clamp(28px, 4vw, 52px);
+        line-height: 1.25;
+        font-weight: 900;
+      }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.65s ease, transform 0.65s ease;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 860px) {
+        .container {
+          width: min(100% - 28px, 680px);
+        }
+
+        .hero {
+          padding-top: 48px;
+        }
+
+        .section-head {
+          display: block;
+        }
+
+        .section-desc {
+          margin-top: 14px;
+        }
+
+        .concept-grid,
+        .personality-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div class="container">
+          <div class="hero-copy fade-in">
+            <h1>多闪 AI情绪人格企划</h1>
+            <p class="subtitle">
+              用 AI 识别年轻人的电子情绪人格，让情绪表达成为新的社交入口
+            </p>
+          </div>
+
+          <div class="kv-card fade-in">
+            <div class="image-frame">
+              <img src="assets/hero-kv.png" alt="多闪 AI情绪人格企划主KV" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="section-head fade-in">
+            <div>
+              <div class="section-kicker">Campaign Concept</div>
+              <h2>从情绪识别到社交表达</h2>
+            </div>
+            <p class="section-desc">
+              以人格测试作为轻量入口，用 AI 将聊天行为转译成可分享、可讨论、可传播的情绪人格内容。
+            </p>
+          </div>
+
+          <div class="concept-grid">
+            <article class="concept-card fade-in">
+              <div class="concept-number">01</div>
+              <h3>用户洞察</h3>
+              <p>年轻人喜欢通过人格测试表达自我、寻找同频，用轻松的标签说出复杂情绪。</p>
+            </article>
+            <article class="concept-card fade-in">
+              <div class="concept-number">02</div>
+              <h3>核心玩法</h3>
+              <p>AI 根据聊天习惯、活跃时间、表情偏好生成电子情绪人格，形成个性化结果。</p>
+            </article>
+            <article class="concept-card fade-in">
+              <div class="concept-number">03</div>
+              <h3>传播目标</h3>
+              <p>通过结果海报分享，提升活动曝光与品牌声量，让人格内容自然进入社交场景。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="section-head fade-in">
+            <div>
+              <div class="section-kicker">Personality System</div>
+              <h2>四种电子情绪人格</h2>
+            </div>
+            <p class="section-desc">
+              每一种人格结果都对应一种情绪表达方式，方便用户转发、互相识别与开启话题。
+            </p>
+          </div>
+
+          <div class="personality-grid">
+            <article class="personality-card fade-in">
+              <div class="image-frame">
+                <img src="assets/personality-mint.png" alt="薄荷放空型人格结果图" />
+              </div>
+              <h3>薄荷放空型</h3>
+              <p>关键词：低耗能、慢热、需要轻轻的陪伴。</p>
+            </article>
+            <article class="personality-card fade-in">
+              <div class="image-frame">
+                <img src="assets/personality-bubble.png" alt="气泡倾诉型人格结果图" />
+              </div>
+              <h3>气泡倾诉型</h3>
+              <p>关键词：表达欲、情绪治愈、喜欢被认真回应。</p>
+            </article>
+            <article class="personality-card fade-in">
+              <div class="image-frame">
+                <img src="assets/personality-cosmos.png" alt="宇宙观察型人格结果图" />
+              </div>
+              <h3>宇宙观察型</h3>
+              <p>关键词：安静观察、深夜活跃、捕捉细微信号。</p>
+            </article>
+            <article class="personality-card fade-in">
+              <div class="image-frame">
+                <img src="assets/personality-sunlight.png" alt="日光充电型人格结果图" />
+              </div>
+              <h3>日光充电型</h3>
+              <p>关键词：积极分享、能量外放、把快乐传给朋友。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="section-head fade-in">
+            <div>
+              <div class="section-kicker">Offline Pop-up</div>
+              <h2>户外草坪 AI 情绪人格快闪</h2>
+            </div>
+            <p class="section-desc">
+              设置人格墙、情绪测试机、巨型小火人和打卡区，形成线下拍照传播场景。
+            </p>
+          </div>
+          <div class="section-card wide-card fade-in">
+            <div class="image-frame">
+              <img src="assets/offline-popup.png" alt="户外草坪 AI 情绪人格快闪效果图" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="section-head fade-in">
+            <div>
+              <div class="section-kicker">Spread Flow</div>
+              <h2>传播链路</h2>
+            </div>
+            <p class="section-desc">
+              扫码参与 → 人格测试 → 生成海报 → 分享社交媒体 → 解锁同频好友
+            </p>
+          </div>
+          <div class="section-card wide-card fade-in">
+            <div class="image-frame">
+              <img src="assets/communication-flow.png" alt="多闪 AI情绪人格企划传播链路图" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ending">
+        <div class="container">
+          <div class="section-card ending-card fade-in">
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      document.querySelectorAll(".fade-in").forEach((item) => {
+        observer.observe(item);
+      });
+    </script>
+  </body>
+</html>
